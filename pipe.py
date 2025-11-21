@@ -1,3 +1,4 @@
+# Import Lib.
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
 import os
 import re
@@ -10,12 +11,13 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 import streamlit as st
 
+# Load API Key/LLM model (In this case GPT)
 load_dotenv()
 
 
 def data_loader(video_id, question):
     try:
-        # LLM
+        # Initilize the model
         llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.8)
 
         # 1. Transcript fetch
@@ -70,12 +72,13 @@ def data_loader(video_id, question):
 
         # 8. Invoke chain
         return rag_chain.invoke(question)
-
+        
+    # Exception handling
     except TranscriptsDisabled:
         return "No transcript available for this video"
 
 
-
+# Streamlit code for UI
 st.title("🎥 YouTube RAG Assistant")
 st.write("Ask questions from any YouTube video using transcript based RAG.")
 
